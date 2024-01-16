@@ -1,0 +1,27 @@
+Package: coddecomp
+Type: Package
+Title: Standardize, Evaluate, and Adjust Demographic Data
+Version: 00.00.001
+Date: 2024-01-16
+Authors@R: c(
+   person("Tim", "Riffe", role = c("aut", "cre"), 
+          email = "tim.riffe@gmail.com", comment = c(ORCID = "0000-0002-2673-4622")),
+   person("David", "Atance", role = c("aut"), 
+          email = "david.atance@uah.es")
+   )
+Description: A set of all-cause and cause-specific decomposition methods.
+License: file LICENSE
+LazyLoad: yes
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports:
+  DemoTools,
+  Rdpack
+Depends:
+    R (>= 4.3)
+RdMacros: Rdpack
+BugReports: https://github.com/timriffe/coddecomp/issues
+Encoding: UTF-8
+Remotes: 
+    github::timriffe/DemoTools
