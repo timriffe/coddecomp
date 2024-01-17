@@ -1,6 +1,6 @@
 Package: coddecomp
 Type: Package
-Title: Standardize, Evaluate, and Adjust Demographic Data
+Title: Decompose life expectancy into contributions from rates in different ages and potentially also causes of death
 Version: 00.00.002
 Date: 2024-01-17
 Authors@R: c(
