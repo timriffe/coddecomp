@@ -15,6 +15,7 @@
 #' @param closeout logical. Default `TRUE`. Shall we use the HMD Method Protocol to close out the `ax` and `qx` values? See details.
 #' @details setting `closeout` to `TRUE` will result in value of `1/mx` for the final age group, of `ax` and a value of 1 for the closeout of `qx`.
 #' @return `cc` numeric vector with one element per age group, and which sums to the total difference in life expectancy between population 1 and 2.
+#' @importFrom data.table shift
 #' @export
 #' @references
 #' \insertRef{arriaga1984measuring}{coddecomp}
@@ -83,7 +84,7 @@ arriaga <- function(mx1,
   Tx2 <- rcumsum(Lx2)
   
   direct = lx1 * (Lx2 / lx2 - Lx1 / lx1)
-  indirect = lead(Tx2, default = 0) * (lx1 / lx2 - lead(lx1, default = 0) / lead(lx2, default = 0))
+  indirect = shift(Tx2, n = -1, fill = 0) * (lx1 / lx2 - shift(lx1, n = -1, fill = 0) / shift(lx2, n = -1, fill = 0))
   N <- length(mx1)
   indirect[N] = lx1[N] * (Tx2[N] / lx2[N] - Tx1[N] / lx1[N])
 
@@ -98,6 +99,7 @@ arriaga <- function(mx1,
 #' @seealso \code{\link{arriaga}}
 #' @inheritParams arriaga
 #' @return `s` numeric vector with one element per age group, and which gives the sensitivity values for each age.
+#' @importFrom data.table shift
 #' @export
 #' @references
 #' \insertRef{arriaga1984measuring}{coddecomp}
@@ -157,7 +159,7 @@ sen_arriaga <- function(mx1,
   
   direct = lx1 * (Lx2 / lx2 - Lx1 / lx1)
   N = length(mx1)
-  indirect = lead(Tx2, default = 0) * (lx1 / lx2 - lead(lx1, default = 0) / lead(lx2, default = 0))
+  indirect = shift(Tx2, n = -1, fill = 0) * (lx1 / lx2 - shift(lx1, n = -1, fill = 0) / shift(lx2, n = -1, fill = 0))
   indirect[N] = lx1[N] * (Tx2[N] / lx2[N] - Tx1[N] / lx1[N])
   #indirect = ifelse(is.na(indirect),0,indirect),
   cc = direct + indirect
@@ -213,8 +215,16 @@ sen_arriaga_instantaneous <- function(mx,
                                       closeout = TRUE){
   mx1 <- mx * (1 / (1 - perturb))
   mx2 <- mx * (1 - perturb)
-  s1 <- sen_arriaga(mx1 = mx1, mx2 = mx2, age = age, sex1 = sex1, closeout = closeout)
-  s2 <- sen_arriaga(mx1 = mx2, mx2 = mx1, age = age, sex1 = sex1, closeout = closeout)
+  s1 <- sen_arriaga(mx1 = mx1, 
+                    mx2 = mx2, 
+                    age = age, 
+                    sex1 = sex1, 
+                    closeout = closeout)
+  s2 <- sen_arriaga(mx1 = mx2, 
+                    mx2 = mx1, 
+                    age = age, 
+                    sex1 = sex1, 
+                    closeout = closeout)
   # TR: this might need revision, 
   # due to a discovery in the examples of arriaga()
   if (closeout){
@@ -251,8 +261,16 @@ sen_arriaga_instantaneous2 <- function(mx,
                                        closeout = TRUE){
   mx1 <- exp(log(mx) + perturb)
   mx2 <- exp(log(mx) - perturb)
-  s1 <- sen_arriaga(mx1 = mx1, mx2 = mx2, age = age, sex1 = sex1, closeout = closeout)
-  s2 <- sen_arriaga(mx1 = mx2, mx2 = mx1, age = age, sex1 = sex1, closeout = closeout)
+  s1 <- sen_arriaga(mx1 = mx1, 
+                    mx2 = mx2, 
+                    age = age, 
+                    sex1 = sex1, 
+                    closeout = closeout)
+  s2 <- sen_arriaga(mx1 = mx2, 
+                    mx2 = mx1, 
+                    age = age, 
+                    sex1 = sex1, 
+                    closeout = closeout)
   # TR: this might need revision, 
   # due to a discovery in the examples of arriaga()
   if (closeout){
