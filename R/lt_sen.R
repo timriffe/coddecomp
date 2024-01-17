@@ -2,25 +2,58 @@
 # sensitivity to mx.
 # in continous math it's -l(x)e(x), we just need to find the best
 # approx with a discrete lifetable
-sen_e0_mx <- function(mx){
-  # ax <-
-  lx <- mx_to_lx(mx)
+
+#' @title A direct approximation of the sensitivity of life expectancy at birth to changes in mortality.
+#' @description This direct lifetable-based calculation requires a few approximations to get a usable value whenever we're working with discrete data. In continuous notation, we know that the sensitivity \eqn{s(x)}
+#' \deqn{s(x) = -l(x)e(x)}
+#' but it is not obvious what to use from a discrete lifetable. In this implementation, we use \eqn{L(x)} and an \eqn{a(x)}-weighted average of successive \eqn{e(x)} values, specifically, we calculate:
+#' \deqn{s(x) = -L(x) \cdot \left e(x) \cdot (1 - a(x)) + e(x+1) * a(x)\right)}
+#' This seems to be a very good approximation for ages >0, but we still have a small, but unaccounted-for discrepancy in age 0, at least when comparing with also-imperfect numerical derivatives.
+#' @importFrom data.table shift
+#' @export
+#' @examples
+#' x <- 0:100
+#' mx <- 0.001 * exp(x * 0.07)
+#' sl <-  sen_e0_mx_lt(mx,age=x,sex='t',closeout=TRUE)
+#' sn <- numDeriv::grad(mx_to_e0, mx, age=x, sex = 't', closeout=TRUE)
+#' \dontrun{
+#' plot(x,sl)
+#' lines(x,sn)
+#' }
+#' # examine residuals:
+#' sl - sn
+#' # Note discrepancies in ages >0 are due to numerical precision only
+#' \dontrun{
+#' plot(x, sl - sn, main = "still uncertain what accounts for the age 0 discrepancy")
+#' }
+sen_e0_mx_lt <- function(mx, 
+                      age = 0:(length(mx)-1), 
+                      sex = 't',
+                      closeout = TRUE){
+  ax <- mx_to_ax(mx = mx, 
+                 age = age, 
+                 sex = sex, 
+                 closeout = closeout)
+  qx <- mx_to_qx(mx, ax)
+  lx <- qx_to_lx(qx)
   dx <- lx_to_dx(lx)
-  qx <- dx / lx
-  ax <- mq_to_ax(mx,qx)
-  Lx <- ald_to_Lx(ax,lx,dx)
-  ex <- lL_to_ex(lx,Lx)
+  Lx <- ald_to_Lx(ax = ax,
+                  lx = lx,
+                  dx = dx)
+  ex <- lL_to_ex(lx = lx, Lx = Lx)
   # ex <- mx_to_ex(mx)
   N <- length(mx)
-  x <- (1:N) - 1 
-  #ex2 <- mean2(ex)
-  ex2 <- approx(x,ex,xout = x + ax)$y
-  Lx2 <- approx(x,Lx,xout = x + ax)$y
-  dx2 <- approx(x,dx,xout = x + ax)$y
-  ax2 <- approx(x,ax,xout = x + ax)$y
+
+  # This is the current-best approximation,
+  # but still requires an unknown adjustment for age 0
+  exs <- shift(ex, n = -1, fill = ex[N]) 
+  ex2 <- ex * (1 - ax) + exs * ax
+
   ex2[N] <- ex[N]
-  -Lx * ex2
-  #-Lx2 * ex2 - dx2*(1-ax2) *ex2 #+ direct
+ 
+  sen <- -Lx * ex2 
+
+  sen
 }
 
 # direct = (lx - dx * ax)

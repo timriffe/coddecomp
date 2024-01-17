@@ -4,14 +4,12 @@
 \alias{mx_to_qx}
 \title{produce single-age \code{qx} values}
 \usage{
-mx_to_qx(mx, ax, age = 0:(length(mx1) - 1), closeout = TRUE)
+mx_to_qx(mx, ax, closeout = TRUE)
 }
 \arguments{
 \item{mx}{numeric vector of the mortality rates (central death rates)}
 
 \item{ax}{numeric vector of \code{ax} values}
-
-\item{age}{integer vector of the lower bound of each age group (currently only single ages supported)}
 
 \item{closeout}{logical. Default \code{TRUE}.}
 }

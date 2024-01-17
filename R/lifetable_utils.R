@@ -22,7 +22,7 @@ mx_to_ax <- function(mx, age = 0:(length(mx1)-1), sex = "t", closeout = TRUE){
   stopifnot(all(diff(age) == 1))
   ax <- rep(.5, length(mx))
   sex <- sex |> tolower() |> substr(1,1)
-  sex <- if_else(sex == "b","t",sex)
+  sex <- ifelse(sex == "b","t",sex)
   stopifnot(sex %in% c("m","f","t"))
   if (min(age) == 0){
     if (sex != "t"){
@@ -49,7 +49,7 @@ mx_to_ax <- function(mx, age = 0:(length(mx1)-1), sex = "t", closeout = TRUE){
 #' @importFrom DemoTools lt_id_ma_q
 #' @references
 #' \insertRef{wilmoth2021methods}{coddecomp}
-mx_to_qx <- function(mx, ax, age = 0:(length(mx1)-1), closeout = TRUE){
+mx_to_qx <- function(mx, ax, closeout = TRUE){
   lt_id_ma_q(nMx = mx, 
              nax = ax, 
              AgeInt = rep(1, length(mx)), 
@@ -118,11 +118,14 @@ lL_to_ex <- function(lx, Lx){
 #' @return numeric vector of `ex`, the same length as `mx`
 #' @export
 
-mx_to_ex <- function(mx, age, sex = 't'){
+mx_to_ex <- function(mx, age, sex = 't', closeout = TRUE){
   ax <- mx_to_ax(mx = mx, 
                  age = age, 
-                 sex = sex)
-  qx <- mx_to_qx(mx, ax)
+                 sex = sex,
+                 closeout = closeout)
+  qx <- mx_to_qx(mx = mx, 
+                 ax = ax,
+                 closeout = closeout)
   lx <- qx_to_lx(qx)
   dx <- lx_to_dx(lx)
   Lx <- ald_to_Lx(ax = ax,
@@ -138,7 +141,13 @@ mx_to_ex <- function(mx, age, sex = 't'){
 #' @return numeric scalar of `e0`
 #' @export
 
-mx_to_e0 <- function(mx, age, sex = 't'){
-  ex <- mx_to_ex(mx = mx, age = age, sex = sex) 
+mx_to_e0 <- function(mx, 
+                     age, 
+                     sex = 't',
+                     closeout = TRUE){
+  ex <- mx_to_ex(mx = mx, 
+                 age = age, 
+                 sex = sex,
+                 closeout = closeout) 
   ex[1]
 }

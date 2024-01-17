@@ -4,7 +4,7 @@
 \alias{mx_to_ex}
 \title{calculate remaining life expectancy from mortality rates}
 \usage{
-mx_to_ex(mx, age, sex = "t")
+mx_to_ex(mx, age, sex = "t", closeout = TRUE)
 }
 \arguments{
 \item{mx}{numeric vector of the mortality rates (central death rates)}
@@ -12,6 +12,8 @@ mx_to_ex(mx, age, sex = "t")
 \item{age}{integer vector of the lower bound of each age group (currently only single ages supported)}
 
 \item{sex}{character: Male (\code{"m"}), Female (\code{"f"}), or Total (\code{"t"})}
+
+\item{closeout}{logical. Default \code{TRUE}.}
 }
 \value{
 numeric vector of \code{ex}, the same length as \code{mx}
