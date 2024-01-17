@@ -10,7 +10,7 @@ rcumsum <- function(x){
 
 #' @title produce single-age `ax` values
 #' @description We assume mid-interval `ax` except for age 0 and potentially the open age group. `ax` is defined as the average years lived in each age interval by those that die within the interval, and it is used to increase the precision of lifetable estimates. We allow ourselves the midpoint rule for single ages because it has little leverage. If we were working with abridged ages then we would need to use a more sophisticated method.
-#' @details For the case of Total sex, we estimate the male and female \eqn{a(0)} using the Andreev-Kingkade rule of thumb, and then average them. We assume a value of 1/2 for all other ages, unless `closeout = TRUE`, in which case we close with `1/mx` for the final value.
+#' @details For the case of Total sex, we estimate the male and female \eqn{a(0)} using the Andreev-Kingkade rule of thumb, and then average them. We assume a value of 1/2 for all other ages, unless `closeout = TRUE`, in which case we close with `1/mx` for the final value. 
 #' @param mx numeric vector of the mortality rates (central death rates)
 #' @param age integer vector of the lower bound of each age group (currently only single ages supported)
 #' @param sex character: Male (`"m"`), Female (`"f"`), or Total (`"t"`)
@@ -112,6 +112,12 @@ lL_to_ex <- function(lx, Lx){
 }
 
 
+#' @title calculate remaining life expectancy from mortality rates
+#' @description We follow the full chain of standard lifetable column calculations to translate `mx` to `ex`.
+#' @inheritParams mx_to_ax
+#' @return numeric vector of `ex`, the same length as `mx`
+#' @export
+
 mx_to_ex <- function(mx, age, sex = 't'){
   ax <- mx_to_ax(mx = mx, 
                  age = age, 
@@ -125,6 +131,12 @@ mx_to_ex <- function(mx, age, sex = 't'){
   ex <- lL_to_ex(lx = lx, Lx = Lx)
   ex
 }
+
+#' @title calculate life expectancy at birth from mortality rates
+#' @description We follow the full chain of standard lifetable column calculations to translate `mx` to `ex`, then select the first element of `ex`. If `min(age) > 0`, then we return remaining life expectancy at the lowest given age.
+#' @inheritParams mx_to_ax
+#' @return numeric scalar of `e0`
+#' @export
 
 mx_to_e0 <- function(mx, age, sex = 't'){
   ex <- mx_to_ex(mx = mx, age = age, sex = sex) 
