@@ -1,8 +1,8 @@
 Package: coddecomp
 Type: Package
 Title: Standardize, Evaluate, and Adjust Demographic Data
-Version: 00.00.001
-Date: 2024-01-16
+Version: 00.00.002
+Date: 2024-01-17
 Authors@R: c(
    person("Tim", "Riffe", role = c("aut", "cre"), 
           email = "tim.riffe@gmail.com", comment = c(ORCID = "0000-0002-2673-4622")),
