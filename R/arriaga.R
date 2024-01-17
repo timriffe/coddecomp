@@ -10,8 +10,8 @@
 #' @param mx1 numeric vector of the mortality rates (central death rates) for population 1
 #' @param mx2 numeric vector of the mortality rates (central death rates) for population 2
 #' @param age integer vector of the lower bound of each age group (currently only single ages supported)
-#' @param sex1 character either the sex for population 1: Male (`"m"`),Female (`"f"`), or Total (`"t"`)
-#' @param sex2 character either the sex for population 2: Male (`"m"`),Female (`"f"`), or Total (`"t"`) assumed same as `sex1` unless otherwise specified.
+#' @param sex1 character either the sex for population 1: Male (`"m"`), Female (`"f"`), or Total (`"t"`)
+#' @param sex2 character either the sex for population 2: Male (`"m"`), Female (`"f"`), or Total (`"t"`) assumed same as `sex1` unless otherwise specified.
 #' @param closeout logical. Default `TRUE`. Shall we use the HMD Method Protocol to close out the `ax` and `qx` values? See details.
 #' @details setting `closeout` to `TRUE` will result in value of `1/mx` for the final age group, of `ax` and a value of 1 for the closeout of `qx`.
 #' @return `cc` numeric vector with one element per age group, and which sums to the total difference in life expectancy between population 1 and 2.
