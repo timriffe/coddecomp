@@ -10,15 +10,16 @@ Authors@R: c(
           email = "david.atance@uah.es")
    )
 Description: A set of all-cause and cause-specific decomposition methods.
-License: file LICENSE
+License: GPL-3
 LazyLoad: yes
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Imports:
   DemoTools,
-  Rdpack,
-  data.table
+  data.table,
+  numDeriv,
+  Rdpack
 Depends:
     R (>= 4.3)
 RdMacros: Rdpack

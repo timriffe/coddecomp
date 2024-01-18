@@ -7,11 +7,11 @@
 ald_to_Lx(ax, lx, dx)
 }
 \arguments{
-\item{ax}{}
+\item{ax}{numeric vector of ax, average time spent in the age interval by those that die in the interval}
 
-\item{lx}{}
+\item{lx}{numeric vector of lx, lifetable survivorship at exact ages.}
 
-\item{dx}{}
+\item{dx}{numeric vector of dx, the lifetable deaths distribution.}
 }
 \value{
 numeric vector of \code{Lx} values

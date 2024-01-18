@@ -6,6 +6,15 @@
 \usage{
 sen_e0_mx_lt(mx, age = 0:(length(mx) - 1), sex = "t", closeout = TRUE)
 }
+\arguments{
+\item{mx}{numeric vector of the mortality rates (central death rates)}
+
+\item{age}{integer vector of the lower bound of each age group (currently only single ages supported)}
+
+\item{sex}{character: Male (\code{"m"}), Female (\code{"f"}), or Total (\code{"t"})}
+
+\item{closeout}{logical. Default \code{TRUE}.}
+}
 \description{
 This direct lifetable-based calculation requires a few approximations to get a usable value whenever we're working with discrete data. In continuous notation, we know that the sensitivity \eqn{s(x)}
 \deqn{s(x) = -l(x)e(x)}

@@ -18,7 +18,7 @@ rcumsum <- function(x){
 #' @importFrom DemoTools lt_rule_ak_m0_a0
 #' @export 
 #' @seealso \link[DemoTools]{lt_rule_ak_m0_a0}
-mx_to_ax <- function(mx, age = 0:(length(mx1)-1), sex = "t", closeout = TRUE){
+mx_to_ax <- function(mx, age = 0:(length(mx)-1), sex = "t", closeout = TRUE){
   stopifnot(all(diff(age) == 1))
   ax <- rep(.5, length(mx))
   sex <- sex |> tolower() |> substr(1,1)
@@ -81,9 +81,9 @@ lx_to_dx <- function(lx){
 
 #' @title Calculate the lifetable exposure
 #' @description `Lx` is defined as the integration of `lx` in the interval `[x,x+n)`, where `n` is the width of the interval. There are many approximations for this. Here we use HMD Method Protocol equation 78. You can think of `Lx` as lifetable exposure, or person-years lived in each age interval.
-#' @param ax 
-#' @param lx 
-#' @param dx 
+#' @param ax numeric vector of ax, average time spent in the age interval by those that die in the interval
+#' @param lx numeric vector of lx, lifetable survivorship at exact ages.
+#' @param dx  numeric vector of dx, the lifetable deaths distribution.
 #' @return numeric vector of `Lx` values
 #' @importFrom DemoTools lt_id_lda_L
 #' @seealso \link[DemoTools]{lt_id_lda_L}

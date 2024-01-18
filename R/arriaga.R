@@ -64,11 +64,9 @@ arriaga <- function(mx1,
                   closeout = closeout)
   qx1 <- mx_to_qx(mx = mx1,
                   ax = ax1,
-                  age = age, 
                   closeout = closeout)
   qx2 <- mx_to_qx(mx = mx2,
                   ax = ax2,
-                  age = age, 
                   closeout = closeout)
   lx1 <- qx_to_lx(qx1)
   lx2 <- qx_to_lx(qx2)
@@ -138,11 +136,9 @@ sen_arriaga <- function(mx1,
                   closeout = closeout)
   qx1 <- mx_to_qx(mx = mx1,
                   ax = ax1,
-                  age = age, 
                   closeout = closeout)
   qx2 <- mx_to_qx(mx = mx2,
                   ax = ax2,
-                  age = age, 
                   closeout = closeout)
   lx1 <- qx_to_lx(qx1)
   lx2 <- qx_to_lx(qx2)
@@ -180,6 +176,7 @@ sen_arriaga <- function(mx1,
 #' @details A minor correction might be needed for the final age group for the case of the reverse-direction Arriaga sensitivity. Note also for values of `perturb` (h) that are less than `1e-7` we might lose stability in results.
 #' @inheritParams arriaga
 #' @param mx numeric vector of mortality rates (central death rates)
+#' @param perturb numeric constant, a very small number
 #' @export
 #' @examples
 #' a   <- .001

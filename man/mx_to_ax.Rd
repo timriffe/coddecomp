@@ -4,7 +4,7 @@
 \alias{mx_to_ax}
 \title{produce single-age \code{ax} values}
 \usage{
-mx_to_ax(mx, age = 0:(length(mx1) - 1), sex = "t", closeout = TRUE)
+mx_to_ax(mx, age = 0:(length(mx) - 1), sex = "t", closeout = TRUE)
 }
 \arguments{
 \item{mx}{numeric vector of the mortality rates (central death rates)}

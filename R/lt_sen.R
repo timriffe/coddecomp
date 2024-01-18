@@ -11,7 +11,10 @@
 #' s_x = -L_x \cdot \left e_x \cdot \left( 1 - a_x \right) + e_{x+1} \cdot a_x\right) 
 #' }
 #' This seems to be a very good approximation for ages >0, but we still have a small, but unaccounted-for discrepancy in age 0, at least when comparing with also-imperfect numerical derivatives.
+#' @inheritParams mx_to_e0
 #' @importFrom data.table shift
+#' @importFrom numDeriv grad
+#' @importFrom Rdpack reprompt
 #' @export
 #' @examples
 #' x <- 0:100

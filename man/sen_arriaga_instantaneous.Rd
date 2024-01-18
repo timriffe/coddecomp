@@ -22,6 +22,8 @@ sen_arriaga_instantaneous(
 
 \item{sex2}{character either the sex for population 2: Male (\code{"m"}), Female (\code{"f"}), or Total (\code{"t"}) assumed same as \code{sex1} unless otherwise specified.}
 
+\item{perturb}{numeric constant, a very small number}
+
 \item{closeout}{logical. Default \code{TRUE}. Shall we use the HMD Method Protocol to close out the \code{ax} and \code{qx} values? See details.}
 }
 \description{
