@@ -9,7 +9,7 @@ Authors@R: c(
    person("David", "Atance", role = c("aut"), 
           email = "david.atance@uah.es")
    )
-Description: A set of all-cause and cause-specific decomposition methods.
+Description: A set of all-cause and cause-specific life expectancy sensitivity and decomposition methods.
 License: GPL-3
 LazyLoad: yes
 LazyData: true
