@@ -177,6 +177,7 @@ sen_arriaga <- function(mx1,
 #' @inheritParams arriaga
 #' @param mx numeric vector of mortality rates (central death rates)
 #' @param perturb numeric constant, a very small number
+#' @importFrom data.table shift
 #' @export
 #' @examples
 #' a   <- .001
@@ -211,7 +212,7 @@ sen_arriaga_instantaneous <- function(mx,
                                       perturb = 1e-6, 
                                       closeout = TRUE){
   mx1 <- mx * (1 / (1 - perturb))
-  mx2 <- mx * (1 - perturb)
+  mx2 <- mx * (1 - perturb) / 1
   s1 <- sen_arriaga(mx1 = mx1, 
                     mx2 = mx2, 
                     age = age, 
@@ -304,16 +305,5 @@ sen_arriaga_instantaneous2 <- function(mx,
 #   cc <- (cc2 - cc1 )
 #   cc / delta /2
 # }
-# mx2e0 <- function(mx){
-#   N <- length(mx)
-#   x <- (1:N) - 1
-#   lx <- c(1,exp(-cumsum(mx)))
-#   ax  <- c(.1,rep(.5,100))
-#   dx <- -diff(lx)
-#   lx <- lx[1:N]
-#   Lx <- lx - (1 - ax) * dx
-#   Tx <- rcumsum(Lx)
-#   ex <- Tx / lx
-#   ex[1]
-# }
-# plot(sen_arriaga_instantaneous(mx, perturb = 1e-7)-numDeriv::grad(mx_to_e0,mx))
+
+ 
