@@ -7,8 +7,7 @@
 sen_arriaga_instantaneous(
   mx,
   age = 0:(length(mx1) - 1),
-  sex1 = "t",
-  sex2 = sex1,
+  sex = "t",
   perturb = 1e-06,
   closeout = TRUE
 )
@@ -18,9 +17,7 @@ sen_arriaga_instantaneous(
 
 \item{age}{integer vector of the lower bound of each age group (currently only single ages supported)}
 
-\item{sex1}{character either the sex for population 1: Male (\code{"m"}), Female (\code{"f"}), or Total (\code{"t"})}
-
-\item{sex2}{character either the sex for population 2: Male (\code{"m"}), Female (\code{"f"}), or Total (\code{"t"}) assumed same as \code{sex1} unless otherwise specified.}
+\item{sex}{character Male (\code{"m"}), Female (\code{"f"}), or Total (\code{"t"})}
 
 \item{perturb}{numeric constant, a very small number}
 

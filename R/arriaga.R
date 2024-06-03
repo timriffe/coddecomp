@@ -176,6 +176,7 @@ sen_arriaga <- function(mx1,
 #' @details A minor correction might be needed for the final age group for the case of the reverse-direction Arriaga sensitivity. Note also for values of `perturb` (h) that are less than `1e-7` we might lose stability in results.
 #' @inheritParams arriaga
 #' @param mx numeric vector of mortality rates (central death rates)
+#' @param sex character Male (`"m"`), Female (`"f"`), or Total (`"t"`)
 #' @param perturb numeric constant, a very small number
 #' @importFrom data.table shift
 #' @export
@@ -207,8 +208,7 @@ sen_arriaga <- function(mx1,
 #' lines(x, s2_d*delta, col = "blue", lty =2)
 sen_arriaga_instantaneous <- function(mx, 
                                       age = 0:(length(mx1)-1), 
-                                      sex1 = 't', 
-                                      sex2 = sex1, 
+                                      sex = 't', 
                                       perturb = 1e-6, 
                                       closeout = TRUE){
   mx1 <- mx * (1 / (1 - perturb))
@@ -216,12 +216,14 @@ sen_arriaga_instantaneous <- function(mx,
   s1 <- sen_arriaga(mx1 = mx1, 
                     mx2 = mx2, 
                     age = age, 
-                    sex1 = sex1, 
+                    sex1 = sex, 
+                    sex2 = sex,
                     closeout = closeout)
   s2 <- sen_arriaga(mx1 = mx2, 
                     mx2 = mx1, 
                     age = age, 
-                    sex1 = sex1, 
+                    sex1 = sex, 
+                    sex2 = sex,
                     closeout = closeout)
   # TR: this might need revision, 
   # due to a discovery in the examples of arriaga()
@@ -253,8 +255,7 @@ sen_arriaga_instantaneous <- function(mx,
 #'      main = "very similar.\nMaybe one is more stable than the other?")
 sen_arriaga_instantaneous2 <- function(mx, 
                                        age = 0:(length(mx1)-1), 
-                                       sex1 = 't', 
-                                       sex2 = sex1, 
+                                       sex = 't', 
                                        perturb = 1e-6, 
                                        closeout = TRUE){
   mx1 <- exp(log(mx) + perturb)
@@ -262,12 +263,14 @@ sen_arriaga_instantaneous2 <- function(mx,
   s1 <- sen_arriaga(mx1 = mx1, 
                     mx2 = mx2, 
                     age = age, 
-                    sex1 = sex1, 
+                    sex1 = sex, 
+                    sex2 = sex,
                     closeout = closeout)
   s2 <- sen_arriaga(mx1 = mx2, 
                     mx2 = mx1, 
                     age = age, 
-                    sex1 = sex1, 
+                    sex1 = sex, 
+                    sex2 = sex,
                     closeout = closeout)
   # TR: this might need revision, 
   # due to a discovery in the examples of arriaga()
@@ -277,33 +280,51 @@ sen_arriaga_instantaneous2 <- function(mx,
   (s1 + s2) / 2
 }
 
+#' @title Estimate sensitivity of life expectancy using a symmetrical Arriaga approach.
+#' @description This approach conducts a classic Arriaga decomposition in both directions, averaging the (sign-adjusted) result, i.e. `a_avg = (arriaga(mx1,mx2, ...) - arriaga(mx2, mx1, ...)) / 2`, then approximates the sensitivity by dividing out the rate differences, i.e. `s = a_avg / (mx2 - mx1)`. A resulting decomposition will be exact because the two arriaga directions are exact, but this method might be vulnerable to 0s in the denominator.
+#' @export
+#' @inheritParams arriaga
+#' @seealso \code{\link{arriaga}}
+#' @examples
+#' a <- .001
+#' b <- .07
+#' x <- 0:100
+#' mx1 <- a * exp(x * b)
+#' mx2 <- a/2 * exp(x * b)
+#' s <- sen_arriaga_sym(mx1, mx2, age = x) 
+#' 
+#' e01 <- mx_to_e0(mx1,age=x)
+#' e02 <- mx_to_e0(mx2,age=x)
+#' (Delta <- e02 - e01)
+#' deltas <- mx2- mx1
+#' sum(deltas * s)
+#' 
+#' \dontrun{
+#' mx_avg <- (mx1 + mx2) / 2
+#' plot(x, s, type= 'l')
+#' lines(x, sen_arriaga_instantaneous(mx_avg, age=x),col = "blue")
+#' }
 
-# sen_arriaga_sym <- function(mx, delta){
-#   N <- length(mx)
-#   x <- (1:N) - 1
-#   lx1 <- c(1,exp(-cumsum(mx + delta/2)))
-#   lx2 <- c(1,exp(-cumsum(mx - delta/2)))
-#   ax  <- c(.1,rep(.5,100))
-#   dx1 <- -diff(lx1)
-#   dx2 <- -diff(lx2)
-#   lx1 <- lx1[1:N]
-#   lx2 <- lx2[1:N]
-#   Lx1 <- lx1 - (1 - ax) * dx1
-#   Lx2 <- lx2 - (1 - ax) * dx2
-#   # Lx1 <- approx(x,lx1,xout = x + .5, rule = 2)$y
-#   # Lx2 <- approx(x,lx2, xout = x + .5, rule = 2)$y
-#   Tx2 <- rcumsum(Lx2)
-#   Tx1 <- rcumsum(Lx1)
-#   ex1 <- Tx1 / lx1
-#   ex2 <- Tx2 / lx2
-#   cc1  <- lx1 * (Lx2 / lx2 - Lx1 / lx1) + Tx2 * (lx1/lx2 - lead(lx1) / lead(lx2))
-#   cc1[N] <- lx1[N] * (ex2[N] - ex1[N])
-#   
-#   cc2  <- lx2 * (Lx1 / lx1 - Lx2 / lx2) + Tx1 * (lx2/lx1 - lead(lx2) / lead(lx1))
-#   cc2[N] <- lx2[N] * (ex1[N] - ex2[N])
-#   
-#   cc <- (cc2 - cc1 )
-#   cc / delta /2
-# }
-
+sen_arriaga_sym <- function(mx1, mx2, age = 0:(length(mx1) - 1), sex1 = 't', sex2 = sex1, closeout = TRUE){
+ delta <- mx2 - mx1
+ a1 <- arriaga(mx1, 
+               mx2, 
+               age =age, 
+               sex1 = sex1, 
+               sex2 = sex2, 
+               closeout = closeout)
+ a2 <- arriaga(mx2, 
+               mx1, 
+               age = age, 
+               sex1 = sex2, 
+               sex2 = sex1, 
+               closeout = closeout)
  
+ # This closeout adjustment is necessary, but I can't
+ # say I fully understand why this works out.
+ a2[length(a2)] <- a2[length(a2)] /2
+ a_avg <- (a1 + a2) / 2
+ a_avg / delta
+}
+
+
