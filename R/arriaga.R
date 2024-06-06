@@ -305,11 +305,16 @@ sen_arriaga_instantaneous2 <- function(mx,
 #' lines(x, sen_arriaga_instantaneous(mx_avg, age=x),col = "blue")
 #' }
 
-sen_arriaga_sym <- function(mx1, mx2, age = 0:(length(mx1) - 1), sex1 = 't', sex2 = sex1, closeout = TRUE){
+sen_arriaga_sym <- function(mx1, 
+                            mx2, 
+                            age = 0:(length(mx1) - 1), 
+                            sex1 = 't', 
+                            sex2 = sex1, 
+                            closeout = TRUE){
  delta <- mx2 - mx1
  a1 <- arriaga(mx1, 
                mx2, 
-               age =age, 
+               age = age, 
                sex1 = sex1, 
                sex2 = sex2, 
                closeout = closeout)
@@ -323,7 +328,7 @@ sen_arriaga_sym <- function(mx1, mx2, age = 0:(length(mx1) - 1), sex1 = 't', sex
  # This closeout adjustment is necessary, but I can't
  # say I fully understand why this works out.
  a2[length(a2)] <- a2[length(a2)] /2
- a_avg <- (a1 + a2) / 2
+ a_avg <- (a1 - a2) / 2
  a_avg / delta
 }
 
