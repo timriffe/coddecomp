@@ -2,6 +2,7 @@
 
 export(ald_to_Lx)
 export(arriaga)
+export(arriaga_sym)
 export(decomp_e0)
 export(lL_to_ex)
 export(lx_to_dx)

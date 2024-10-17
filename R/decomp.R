@@ -14,17 +14,17 @@
 #' @export
 # needs examples
 decomp_e0 <- function(mx1, 
-                       mx2, 
-                       age, 
-                       sex1, 
-                       sex2, 
-                       method = c("ltre_lt","ltre_arriaga_instantaneous","ltre_numerical","arriaga", "arriaga_symmetrical", "horiuchi"), 
+                      mx2, 
+                      age, 
+                      sex1, 
+                      sex2, 
+                      method = c("ltre_lt","ltre_arriaga_instantaneous","ltre_numerical","arriaga", "arriaga_symmetrical", "horiuchi"), 
                        N = 20,
                        closeout = TRUE,
                        ...){
    method <- tolower(method)
    method <- match.arg(method = method,
-                       choices = c("ltre_lt","ltre_arriaga_instantaneous", "ltre_numerical","arriaga","arriaga", "arriaga_symmetrical", "horiuchi"))
+                       choices = c("ltre_lt","ltre_arriaga_instantaneous", "ltre_numerical","arriaga", "arriaga_symmetrical", "horiuchi"))
    
    # if sex1 != sex2, we re-call the function twice and take the average...
    if ((sex1 != sex2) & !method %in% c("arriaga","arriaga_symmetrical")){
