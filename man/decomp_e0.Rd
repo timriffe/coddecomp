@@ -14,6 +14,8 @@ decomp_e0(
     "arriaga_symmetrical", "horiuchi"),
   N = 20,
   closeout = TRUE,
+  opt = TRUE,
+  tol = 1e-10,
   ...
 )
 }
