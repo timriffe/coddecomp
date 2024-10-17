@@ -90,5 +90,26 @@ sen_e0_mx_lt <- function(mx,
 sen_num <- function(mx,age,sex='t',closeout=TRUE,...){
   numDeriv::grad(mx_to_e0,mx,age=age,sex=sex,closeout=closeout,...)
 }
-
-
+ 
+ #  x <- 0:100
+ # mx <- 0.001 * exp(x * 0.07)
+ # richardson_hack <- function(mx, age, sex = 't', closeout = TRUE, r = 5, d1 = 1e-5 ...){
+ #   
+ #   pert <- matrix(0, nrow = length(mx), ncol = r)
+ #   d <- d1
+ #   for (rr in 1:r){
+ #     d = d / 2
+ #     for (i in 1:length(mx)){
+ #       mxi1 <- mxi2 <- mx
+ #       mxi1[i] <- mxi1[i] + d
+ #       mxi2[i] <- mxi2[i] - d
+ #       pert[i, rr] <-
+ #       (mx_to_e0(mx = mxi1, age = age, sex = sex, closeout = closeout) -
+ #         mx_to_e0(mx = mxi2, age = age, sex = sex, closeout = closeout)) /
+ #         (2 * d)
+ #     }
+ #   }
+ #   
+ #   
+ #   
+ #  }
